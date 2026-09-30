@@ -72,7 +72,7 @@ export function emptyDraft(people: Person[]): Draft {
   };
 }
 
-export function draftToExpense(draft: Draft, people: Person[], id?: string, createdAt?: string): Expense | { errors: string[] } {
+export function draftToExpense(draft: Draft, people: Person[], id?: string, createdAt?: string, updatedAt?: string): Expense | { errors: string[] } {
   const errors: string[] = [];
   const amount = parseRupiah(draft.amountText);
 
@@ -135,6 +135,7 @@ export function draftToExpense(draft: Draft, people: Person[], id?: string, crea
     payers,
     split,
     createdAt: createdAt ?? new Date().toISOString(),
+    updatedAt,
   };
 }
 
@@ -152,7 +153,7 @@ export default function ExpenseForm({ people, onSubmit, initial }: ExpenseFormPr
     if (initial) setDraft(expenseToDraft(initial));
   }, [initial]);
 
-  const built = draftToExpense(draft, people, initial?.id, initial?.createdAt);
+  const built = draftToExpense(draft, people, initial?.id, initial?.createdAt, initial ? new Date().toISOString() : undefined);
   const errors = 'errors' in built ? built.errors : [];
   const isValid = errors.length === 0;
 

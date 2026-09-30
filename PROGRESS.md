@@ -2,6 +2,21 @@
 
 Diperbarui: 2026-09-30
 
+## R0 — Git init (2026-09-30)
+
+- `git init` + `.gitignore` (node_modules, dist, .DS_Store, *.local, .env)
+- Commit baseline `696732c` "baseline: S0-S10, engine S12/S13" (39 file, node_modules/dist tidak ikut)
+- `Math.random` di `property.test.ts` diganti counter deterministik
+- Grep engine: `BERSIH: engine/` (0 toFixed/parseFloat/Math.random/react/zustand)
+
+Gate:
+```
+TSC OK
+ Test Files  12 passed (12)
+      Tests  75 passed (75)
+✓ built in 1.30s
+```
+
 ## Gate (output asli)
 
 - `npx tsc --noEmit` -> OK, 0 error.
