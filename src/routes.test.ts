@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseHash, toHash } from './routes';
+import { parseHash, toHash, type Route } from './routes';
 
 describe('routes (R2)', () => {
   it('home: #/ dan #', () => {
@@ -48,10 +48,10 @@ describe('routes (R2)', () => {
   });
 
   it('round-trip parseHash(toHash(r)) === r', () => {
-    const cases = [
+    const cases: Route[] = [
       { name: 'home' },
-      { name: 'trip' as const, tripId: 'trip-123', tab: 'balance' as const },
-      { name: 'trip' as const, tripId: 'trip-123', tab: 'settle' as const },
+      { name: 'trip', tripId: 'trip-123', tab: 'balance' },
+      { name: 'trip', tripId: 'trip-123', tab: 'settle' },
     ];
     for (const r of cases) {
       expect(parseHash(toHash(r))).toEqual(r);

@@ -113,3 +113,21 @@ export function settleOptimal(balances: Balances): Transfer[] {
   }
   return out.length <= greedy.length ? out : greedy;
 }
+
+export function chooseTransfers(balances: Balances, optimize: boolean): {
+  transfers: Transfer[];
+  greedyCount: number;
+  optimalCount: number;
+  canOptimize: boolean;
+} {
+  const greedyCount = settleGreedy(balances).length;
+  const canOptimize =
+    Object.values(balances).filter(v => v !== 0).length <= OPTIMAL_MAX_PEOPLE;
+  const optimal = canOptimize ? settleOptimal(balances) : settleGreedy(balances);
+  return {
+    transfers: optimize ? optimal : settleGreedy(balances),
+    greedyCount,
+    optimalCount: optimal.length,
+    canOptimize,
+  };
+}
