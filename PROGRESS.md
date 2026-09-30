@@ -89,7 +89,10 @@ S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11 (R2), S12 (R3), S13 (R4), S14/R
 
 ## Yang belum
 
-- R6: QA manual di browser (refresh/persist, export/import, offline PWA, share link, toggle optimal, back browser)
-- R6: `README.md` final
-- R6: Empty state per tab, error boundary
+- R6: QA manual di browser (refresh/persist, export/import, offline PWA, share link, toggle optimal, back browser) — diserahkan ke user
 - S15 mata uang asing (opsional, belum mulai)
+
+## Lanjut dari sini
+
+Langkah terakhir selesai: R6 (README.md final + error boundary + empty state per tab sudah ada di App.tsx).
+Langkah berikutnya: QA manual di browser oleh user (item di tabel QA §6). Tidak ada langkah otomatis tersisa.
