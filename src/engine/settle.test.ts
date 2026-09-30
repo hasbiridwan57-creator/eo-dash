@@ -168,9 +168,9 @@ describe('settleOptimal (S12)', () => {
   });
 
   it('menerapkan semua transfer membuat semua saldo 0', () => {
-    const balances = { a: 10, b: 9, c: -6, d: -4, e: -9 };
+    const balances: Record<string, number> = { a: 10, b: 9, c: -6, d: -4, e: -9 };
     const transfers = settleOptimal(balances);
-    const after = { ...balances };
+    const after: Record<string, number> = { ...balances };
     for (const t of transfers) {
       after[t.from] += t.amount;
       after[t.to] -= t.amount;

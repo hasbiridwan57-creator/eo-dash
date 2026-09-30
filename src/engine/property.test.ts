@@ -12,23 +12,23 @@ function makeArbitraryTrip(): fc.Arbitrary<Trip> {
   });
 
   return peopleArb.chain(people => {
-    const expensesArb = fc.array(
-      fc.integer({ min: 1, max: 500000 }).map(amount => {
-        const payer = people[0];
-        const participants = people;
-        const expense: Expense = {
-          id: `e${Math.random()}`,
-          title: 'p',
-          category: 'test',
-          amount,
-          payers: [{ personId: payer, amount }],
-          split: { type: 'equal', participantIds: participants },
-          createdAt: '2026-09-29T00:00:00.000Z',
-        };
-        return expense;
-      }),
-      { maxLength: 5 }
-    );
+    const expensesArb = fc
+      .array(fc.integer({ min: 1, max: 500000 }), { maxLength: 5 })
+      .map(amounts =>
+        amounts.map((amount, i): Expense => {
+          const payer = people[0];
+          const participants = people;
+          return {
+            id: `e${i}`,
+            title: 'p',
+            category: 'test',
+            amount,
+            payers: [{ personId: payer, amount }],
+            split: { type: 'equal', participantIds: participants },
+            createdAt: '2026-09-29T00:00:00.000Z',
+          };
+        }),
+      );
 
     return expensesArb.map(expenses => ({
       id: 't',
