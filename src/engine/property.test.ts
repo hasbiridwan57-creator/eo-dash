@@ -3,7 +3,9 @@ import fc from 'fast-check';
 import { splitEqual } from './split';
 import { netBalance, computeBalances } from './balance';
 import { settleGreedy } from './settle';
-import type { Trip, Expense } from './types';
+import type { Trip, Expense, Settlement } from './types';
+
+let testIdCounter = 0;
 
 function makeRobustArbitraryTrip(): fc.Arbitrary<Trip> {
   const peopleArb = fc.uniqueArray(
@@ -57,15 +59,18 @@ function makeRobustArbitraryTrip(): fc.Arbitrary<Trip> {
               return { type: 'custom' as const, shares };
             });
           })(),
-        }).map((extra, idx): Expense => ({
-          id: `e${idx}`,
-          title: base.title,
-          category: base.category,
-          amount: base.amount,
-          payers: extra.payers,
-          split: extra.split,
-          createdAt: '2026-09-29T00:00:00.000Z',
-        }));
+        }).map((extra): Expense => {
+          testIdCounter += 1;
+          return {
+            id: `e-prop-${testIdCounter}`,
+            title: base.title,
+            category: base.category,
+            amount: base.amount,
+            payers: extra.payers,
+            split: extra.split,
+            createdAt: '2026-09-29T00:00:00.000Z',
+          };
+        });
       }),
       { maxLength: 6 }
     );
@@ -74,8 +79,8 @@ function makeRobustArbitraryTrip(): fc.Arbitrary<Trip> {
       id: 't-prop',
       name: 'Property Trip',
       people: people.map(id => ({ id, name: id })),
-      expenses,
-      settlements: [],
+      expenses: expenses as Expense[],
+      settlements: [] as Settlement[],
     }));
   });
 }
