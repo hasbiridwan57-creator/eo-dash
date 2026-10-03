@@ -1,28 +1,91 @@
+import type { Rupiah } from './money';
+export type { Rupiah, Bp } from './money';
 
-export type Money = number;
+export type Ticket = {
+  id: string;
+  category: string;
+  qty: number;
+  price: Rupiah;
+  channel: string;
+};
 
-export type Person = { id: string; name: string };
+export type Vendor = {
+  id: string;
+  name: string;
+  category: string;
+  fee: Rupiah;
+  paid: Rupiah;
+  rider?: string;
+  contact?: string;
+  bankName?: string;
+  accountNumber?: string;
+  riderNotes?: string;
+};
 
 export type Expense = {
   id: string;
   title: string;
   category: string;
-  amount: Money;
-  payers: { personId: string; amount: Money }[];
-  split:
-    | { type: 'equal'; participantIds: string[] }
-    | { type: 'percentage'; shares: { personId: string; bp: number }[] }
-    | { type: 'custom'; shares: { personId: string; amount: Money }[] };
-  createdAt: string;
-  updatedAt?: string;
+  amount: Rupiah;
+  date: string;
 };
 
-export type Settlement = { id: string; from: string; to: string; amount: Money; paidAt: string };
+export type Task = {
+  id: string;
+  title: string;
+  category: 'Perizinan' | 'Vendor' | 'Talent' | 'Marketing' | 'Logistik' | 'Hari-H';
+  deadline: string;
+  done: boolean;
+};
 
-export type Trip = {
+export type RiskItem = {
+  id: string;
+  risk: string;
+  impact: 'Tinggi' | 'Sedang' | 'Rendah';
+  planB: string;
+};
+
+export type Sponsor = {
   id: string;
   name: string;
-  people: Person[];
-  expenses: Expense[];
-  settlements: Settlement[];
+  amount: Rupiah;
+  status: 'Komitmen' | 'Aktif' | 'Terbayar';
+  deliverable?: string; // Logo exposure, booth activity, stage mention
 };
+
+export type RundownItem = {
+  id: string;
+  timeStart: string; // e.g. "18:00"
+  timeEnd: string;   // e.g. "19:00"
+  activity: string;
+  location: string; // e.g. "Main Stage", "Gate 1", "Backstage"
+  pic: string;      // e.g. "Hasbi (Stage Mgr)"
+  cue?: string;     // e.g. "Blackout, Audio intro tape, Smoke machine"
+  status: 'Upcoming' | 'Standby' | 'Live' | 'Done';
+};
+
+export type CommitteeMember = {
+  id: string;
+  name: string;
+  role: string;
+  division: 'Event / Show' | 'Finance & Ticketing' | 'Production & Sound' | 'Security & Perizinan' | 'F&B & Hospitality' | 'Marketing';
+  phone: string;
+};
+
+export interface Event {
+  id: string;
+  name: string;
+  date: string;
+  venue?: string; // Venue name and location
+  budgetCap: Rupiah;
+  contingencyPct?: number;
+  tickets: Ticket[];
+  vendors: Vendor[];
+  expenses: Expense[];
+  tasks: Task[];
+  risks: RiskItem[];
+  sponsors: Sponsor[];
+  createdAt: string;
+  rundown?: RundownItem[];
+  committee?: CommitteeMember[];
+}
